@@ -1,0 +1,51 @@
+Global Access & Multi-Region Strategy for AI Agent Platform
+
+
+Summary: What needs to be done to make the app global
+
+· Add Azure Front Door as a single global entry point for the application
+
+· Use Front Door to route users (UK, EU, AU) to the nearest Azure edge, improving latency
+
+· Keep Azure Container Apps as backends, with Front Door as the only public-facing component
+
+· Enable WAF, TLS, and health probes on Front Door for security and resilience
+
+· Deploy the same application stack in multiple regions (e.g. Australia East + UK South)
+
+· Configure Front Door for latency-based routing and automatic failover
+
+· Implement a data strategy (primary DB + replicas or active/passive)
+
+· Keep security intact using private endpoints, managed identities, and RBAC
+
+
+Global Architecture
+
+The target architecture enables global access for users in regions such as the UK, EU, and APAC using Azure-native global routing and optional multi-region deployments.
+
+Phase 1: Global Entry Point using Azure Front Door
+
+Azure Front Door (Standard/Premium) will be introduced as a global entry point. - Provides a single global URL - Routes users via Microsoft edge locations - Improves latency for international users - Supports WAF, TLS termination, and health probes Traffic Flow: User → Azure Front Door → Container Apps (Australia East)
+
+Phase 2: Multi-Region Deployment
+
+To improve resilience and reduce latency further, the application stack can be deployed in multiple regions such as Australia East and UK South.
+
+Each region will have: - Dedicated Container Apps Environment - Regional networking and private endpoints - Independent scaling Azure Front Door will route traffic based on latency and health checks.
+
+Data Strategy
+
+Database and state management options include: - Primary database with read replicas in secondary regions - Active/passive regional databases - Region-local storage and queues for async workloads
+
+Security Considerations
+
+Security remains unchanged and includes: - Private Endpoints for all core services - Azure AD authentication (single tenant) - Managed Identities and RBAC - Azure Front Door as the only public-facing component
+
+Operational Benefits
+
+This approach enables: - Global performance optimization - High availability and disaster recovery - Minimal application changes - Alignment with SRE and Azure Well-Architected Framework
+
+Conclusion
+
+By introducing Azure Front Door and progressively adopting a multi-region strategy, the AI Agent platform can be safely and effectively made global without compromising security or operational standards.
